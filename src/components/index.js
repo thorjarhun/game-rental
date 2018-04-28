@@ -1,38 +1,34 @@
 // @flow
-import React, { Component } from 'react';
-import { Grid, Navbar, Jumbotron, Button } from 'react-bootstrap';
+import React from 'react'
+import { connect } from 'react-redux'
+import { Grid, Jumbotron, Button } from 'react-bootstrap'
+import { setApiKey, setSearchTerm, reset, emptyCart } from '../actions'
+import GameList from './gameList'
 
-class App extends Component {
-  render() {
-    return (
+export default connect(
+  state => state,
+  { setApiKey, setSearchTerm, reset, emptyCart }
+)(({api_key, search_term, cart, setApiKey, setSearchTerm, reset, emptyCart}) =>
+  <div>
+    <Jumbotron>
+      <Grid>
+        <h1>Game Rental App</h1>
+      </Grid>
+    </Jumbotron>
+    <div>
+      API Key: <input value={api_key} onChange={e => setApiKey(e.target.value)}/>
+      <Button onClick={reset}>Reset All (Except API Key)</Button>
+    </div>
+    <div>
+      <input placeholder='Game Title' value={search_term} onChange={e => setSearchTerm(e.target.value)}/>
+    </div>
+    {
+      !!cart.length &&
       <div>
-        <Navbar inverse fixedTop>
-          <Grid>
-            <Navbar.Header>
-              <Navbar.Brand>
-                <a href="/">React App</a>
-              </Navbar.Brand>
-              <Navbar.Toggle />
-            </Navbar.Header>
-          </Grid>
-        </Navbar>
-        <Jumbotron>
-          <Grid>
-            <h1>Welcome to React</h1>
-            <p>
-              <Button
-                bsStyle="success"
-                bsSize="large"
-                href="http://react-bootstrap.github.io/components.html"
-                target="_blank">
-                View React Bootstrap Docs
-              </Button>
-            </p>
-          </Grid>
-        </Jumbotron>
+        <Button>Checkout</Button>
+        <Button onClick={emptyCart}>Reset Cart</Button>
       </div>
-    );
-  }
-}
-
-export default App;
+    }
+    <GameList/>
+  </div>
+)
