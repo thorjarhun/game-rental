@@ -7,17 +7,20 @@ import { addToCart } from '../actions'
 export default connect(
   state => ({
     games: state.api_results.termToGames[state.search_term] || [],
-    cart: state.cart
+    cart: state.user.cart,
+    rented: state.user.rented
   })
-)(({games, cart}) =>
+)(({games, cart, rented}) =>
   <div>
     {!!games.length && <div>Select a game to add to cart</div>}
     <ListGroup>
     {
       games.map(gameId =>
-        !cart.includes(gameId)
-          ? <Item key={gameId} id={gameId}/>
-          : <SelectedItem key={gameId} id={gameId}/>
+        gameId in cart
+          ? <SelectedItem key={gameId} id={gameId}/>
+          : rented.includes(gameId+'')
+            ? <RentedItem key={gameId} id={gameId}/>
+            : <Item key={gameId} id={gameId}/>
       )
     }
     </ListGroup>
@@ -35,10 +38,16 @@ const Item = connect(
   </ListGroupItem>
 )
 
-const SelectedItem = connect(
-  (state, {id}) => ({item: state.api_results.games[id]}),
-)(({item}) =>
+const ItemConnector = connect((state, {id}) => ({item: state.api_results.games[id]}))
+
+const SelectedItem = ItemConnector(({item}) =>
   <ListGroupItem active>
+    {item.name}
+  </ListGroupItem>
+)
+
+const RentedItem = ItemConnector(({item}) =>
+  <ListGroupItem disabled>
     {item.name}
   </ListGroupItem>
 )

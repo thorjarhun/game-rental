@@ -17,7 +17,7 @@ export default () => {
     rootReducer,
     composeEnhancers(
       applyMiddleware(...middlewares),
-      persistState(['api_key', 'cart'])
+      persistState(['api_key', 'user'])
     )
   )
 

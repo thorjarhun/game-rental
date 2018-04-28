@@ -4,11 +4,12 @@ import { connect } from 'react-redux'
 import { Grid, Jumbotron, Button } from 'react-bootstrap'
 import { setApiKey, setSearchTerm, reset, emptyCart } from '../actions'
 import GameList from './gameList'
+import Checkout from './checkout'
 
 export default connect(
   state => state,
   { setApiKey, setSearchTerm, reset, emptyCart }
-)(({api_key, search_term, cart, setApiKey, setSearchTerm, reset, emptyCart}) =>
+)(({api_key, search_term, user, setApiKey, setSearchTerm, reset, emptyCart}) =>
   <div>
     <Jumbotron>
       <Grid>
@@ -23,9 +24,9 @@ export default connect(
       <input placeholder='Game Title' value={search_term} onChange={e => setSearchTerm(e.target.value)}/>
     </div>
     {
-      !!cart.length &&
+      !!Object.keys(user.cart).length &&
       <div>
-        <Button>Checkout</Button>
+        <Checkout/>
         <Button onClick={emptyCart}>Reset Cart</Button>
       </div>
     }
