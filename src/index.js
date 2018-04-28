@@ -1,12 +1,18 @@
 // @flow
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
-// Put any other imports below so that CSS from your
-// components takes precedence over default styles.
+import React from 'react'
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import App from './components'
+import configureStore from './configureStore'
+import './index.css'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap-theme.css'
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+const store = configureStore()
 
-ReactDOM.render(<App />, document.getElementById('root'));
+render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)
