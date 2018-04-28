@@ -16,11 +16,7 @@ export default connect(
     <ListGroup>
     {
       games.map(gameId =>
-        gameId in cart
-          ? <SelectedItem key={gameId} id={gameId}/>
-          : rented.includes(gameId+'')
-            ? <RentedItem key={gameId} id={gameId}/>
-            : <Item key={gameId} id={gameId}/>
+        <Item key={gameId} id={gameId}/>
       )
     }
     </ListGroup>
@@ -28,26 +24,16 @@ export default connect(
 )
 
 const Item = connect(
-  (state, {id}) => ({item: state.api_results.games[id]}),
-  (dispatch, {id}) => ({
-    addToCart: () => dispatch(addToCart(id))
-  })
-)(({item, addToCart}) =>
-  <ListGroupItem onClick={addToCart}>
-    {item.name}
-  </ListGroupItem>
-)
-
-const ItemConnector = connect((state, {id}) => ({item: state.api_results.games[id]}))
-
-const SelectedItem = ItemConnector(({item}) =>
-  <ListGroupItem active>
-    {item.name}
-  </ListGroupItem>
-)
-
-const RentedItem = ItemConnector(({item}) =>
-  <ListGroupItem disabled>
+  (state, {id}) => ({
+    item: state.api_results.games[id],
+    selected: id in state.user.cart,
+    rented: state.user.rented.includes(id+'')
+  }),
+  { addToCart }
+)(({item, selected, rented, addToCart}) =>
+  <ListGroupItem active={selected} disabled={rented} {...{
+    ...!selected && !rented && {onClick: () => addToCart(item)}
+  }}>
     {item.name}
   </ListGroupItem>
 )

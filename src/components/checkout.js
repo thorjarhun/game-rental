@@ -12,7 +12,7 @@ export default withStateHandlers(
     hide: () => () => ({isOpen: false})
   }
 )(({isOpen, show, hide}) =>
-  <div>
+  <span>
     <Button onClick={show}>
       Checkout
     </Button>
@@ -20,7 +20,7 @@ export default withStateHandlers(
     <Modal show={isOpen} onHide={hide}>
       <Contents hide={hide}/>
     </Modal>
-  </div>
+  </span>
 )
 
 const Contents = connect(
