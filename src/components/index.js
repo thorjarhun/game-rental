@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import { connect } from 'react-redux'
-import { Grid, Jumbotron, Button } from 'react-bootstrap'
+import { Grid, Jumbotron, Button, FormControl } from 'react-bootstrap'
 import { setApiKey, setSearchTerm, reset, emptyCart } from '../actions'
 import GameList from './gameList'
 import Checkout from './checkout'
@@ -16,11 +16,17 @@ export default connect(
         <h1>Game Rental App</h1>
       </Grid>
     </Jumbotron>
+    <Grid>
     {
       api_key
-       ? <Body/>
-       : <span>API Key: <input autoFocus onBlur={e => setApiKey(e.target.value)}/></span>
+        ? <Body/>
+        : <FormControl
+            autoFocus
+            placeholder='API Key'
+            onChange={e => e.target.value.length === 40 && setApiKey(e.target.value)}
+          />
     }
+    </Grid>
   </div>
 )
 
@@ -29,19 +35,15 @@ const Body = connect(
   { setSearchTerm, reset, emptyCart }
 )(({search_term, user, setSearchTerm, reset, emptyCart}) =>
   <div>
-    <div>
-      <input placeholder='Game Title' autoFocus value={search_term} onChange={e => setSearchTerm(e.target.value)}/>
-    </div>
+    <input placeholder='Game Title' autoFocus value={search_term} onChange={e => setSearchTerm(e.target.value)}/>
     {
       !!Object.keys(user.cart).length &&
-      <div>
+      <span className='pull-right'>
         <Checkout/>
         <Button onClick={emptyCart}>Reset Cart</Button>
-      </div>
+      </span>
     }
     <GameList/>
-    <div>
-      <Button bsSize='xsmall' onClick={reset}>Reset All</Button>
-    </div>
+    <Button bsSize='xsmall' onClick={reset}>Reset All</Button>
   </div>
 )

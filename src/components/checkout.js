@@ -16,7 +16,6 @@ export default withStateHandlers(
     <Button onClick={show}>
       Checkout
     </Button>
-
     <Modal show={isOpen} onHide={hide}>
       <Contents hide={hide}/>
     </Modal>

@@ -6,11 +6,9 @@ import { addToCart } from '../actions'
 
 export default connect(
   state => ({
-    games: state.api_results.termToGames[state.search_term] || [],
-    cart: state.user.cart,
-    rented: state.user.rented
+    games: state.api_results.termToGames[state.search_term] || []
   })
-)(({games, cart, rented}) =>
+)(({games}) =>
   <div>
     {!!games.length && <div>Select a game to add to cart</div>}
     <ListGroup>
@@ -34,6 +32,7 @@ const Item = connect(
   <ListGroupItem active={selected} disabled={rented} {...{
     ...!selected && !rented && {onClick: () => addToCart(item)}
   }}>
+    <img src={item.image.icon_url} alt='' style={{paddingRight: '15px'}}/>
     {item.name}
   </ListGroupItem>
 )

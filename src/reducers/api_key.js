@@ -1,15 +1,7 @@
 // @flow
-import { SET_API_KEY, RESET } from '../constants'
+import { createReducer } from './util'
+import { SET_API_KEY } from '../constants'
 
-const initialState = ''
-
-export default (state=initialState, action) => {
-  switch (action.type) {
-    case SET_API_KEY:
-      return action.key
-    case RESET:
-      return initialState
-    default:
-      return state
-  }
-}
+export default createReducer('', {
+  [SET_API_KEY]: (state, {key}) => key
+})
